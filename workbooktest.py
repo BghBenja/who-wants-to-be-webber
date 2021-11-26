@@ -37,7 +37,7 @@ def random_choice(questions):
 
 
 def the_final_countdowning(question, player_name):
-    counter = 3
+    counter = 30
     while counter != 0:
         clean()
         print_question(question, player_name)
@@ -77,7 +77,6 @@ def main():
             print_question(question, player_name)
             print(f'\033[96mYour answer is:\033[0m\n\n\033[95m{answer_list[question_list.index(question)]}\033[0m')
             print('\033[5mPress enter\033[0m')
-            print('\033[6mPress enter\033[0m')
             input()
     except KeyboardInterrupt:
         clean()

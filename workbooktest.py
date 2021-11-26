@@ -30,6 +30,7 @@ def get_answers_list():
                 if len(answer) > 0:
                     answers.append(answer)
                     answer = ''
+        answers.append(answer)
     return answers
 
 
@@ -79,6 +80,7 @@ def main():
             print(f'\033[96mYour answer is:\033[0m\n\n\033[95m{answer_list[question_list.index(question)]}\033[0m')
             print('\033[5mPress enter\033[0m')
             input()
+            which_player += 1
     except KeyboardInterrupt:
         clean()
         print('\n\033[94mFUCK YOU TONNY!!!!\033[0m\n')

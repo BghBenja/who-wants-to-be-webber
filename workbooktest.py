@@ -34,8 +34,16 @@ def get_answers_list():
     return answers
 
 
-def random_choice(questions):
-    return random.choice(questions)
+def delete_old_used_question(used_questions, questions):
+    if len(used_questions) > len(questions) // 2:
+        del used_questions[0]
+
+
+def random_choice(questions, used_questions):
+    random_question = random.choice(questions)
+    while random_question in used_questions:
+        random_question = random.choice(questions)
+    return random_question
 
 
 def the_final_countdowning(question, player_name):
@@ -70,10 +78,12 @@ def main():
     answer_list = get_answers_list()
     players_list = get_players()
     which_player = 0
+    used_questions = []
     try:
         while True:
+            delete_old_used_question(used_questions, question_list)
             player_name = players_list[which_player % len(players_list)].capitalize()
-            question = random_choice(question_list)
+            question = random_choice(question_list, used_questions)
             the_final_countdowning(question, player_name)
             clean()
             print_question(question, player_name)
@@ -81,6 +91,7 @@ def main():
             print('\033[5mPress enter\033[0m')
             input()
             which_player += 1
+            used_questions.append(question)
     except KeyboardInterrupt:
         clean()
         print('\n\033[94mFUCK YOU TONNY!!!!\033[0m\n')

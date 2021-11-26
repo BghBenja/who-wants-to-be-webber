@@ -12,9 +12,10 @@ def clean():
 
 def list_maker():
     list_of_questions = []
-    with open('Questions.md', 'r') as raw_txt:
+    with open('module_progbasics.md', 'r') as raw_txt:
         for line in raw_txt:
-            list_of_questions.append(line)
+            if '####' in line:
+                list_of_questions.append(line[5:])
     return list_of_questions
 
 

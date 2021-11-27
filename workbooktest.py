@@ -1,7 +1,7 @@
 import random
 import os
 import time
-
+FILE = 'module_progbasics.md'
 
 def clean():
     if os.name == 'nt':
@@ -12,7 +12,7 @@ def clean():
 
 def list_maker():
     list_of_questions = []
-    with open('module_progbasics.md', 'r') as raw_txt:
+    with open(FILE, 'r') as raw_txt:
         for line in raw_txt:
             if '####' in line:
                 list_of_questions.append(line[5:])
@@ -21,7 +21,7 @@ def list_maker():
 
 def get_answers_list():
     answers = []
-    with open('module_progbasics.md') as raw_txt:
+    with open(FILE) as raw_txt:
         answer = ''
         for line in raw_txt:
             if "#" not in line and line != '\n':
@@ -67,10 +67,21 @@ def get_players():
     player_input = 'i'
     while player_input != '':
         clean()
-        player_input = input('\033[96mPlayer name:\033[0m\n\n')
+        for color_code, player in enumerate(players):
+            print(f'\033[3{color_code % 6 + 1}m{player.capitalize()}',end = ', ')
+        player_input = input('\033[96m\nAdd player or press enter:\033[0m\n\n')
         if player_input != '':
             players.append(player_input)
     return players
+
+
+def print_answer(user_choice, question, player_name, answer_list, question_list):
+    if user_choice == 'y':
+        clean()
+        print_question(question, player_name)
+        print(f'\033[96mYour answer is:\033[0m\n\n\033[95m{answer_list[question_list.index(question)]}\033[0m')
+    else:
+        print('\033[96mOkay, you know.\033[0m')
 
 
 def main():
@@ -87,7 +98,8 @@ def main():
             the_final_countdowning(question, player_name)
             clean()
             print_question(question, player_name)
-            print(f'\033[96mYour answer is:\033[0m\n\n\033[95m{answer_list[question_list.index(question)]}\033[0m')
+            user_choice = input('\033[96mDo you need the answer y/n:\033[0m\n\n')
+            print_answer(user_choice, question, player_name, answer_list, question_list)
             print('\033[5mPress enter\033[0m')
             input()
             which_player += 1

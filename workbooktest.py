@@ -1,6 +1,8 @@
 import random
 import os
 import time
+import playsound
+from gtts import gTTS
 FILE = 'module_progbasics.md'
 
 def clean():
@@ -47,16 +49,17 @@ def random_choice(questions, used_questions):
 
 
 def the_final_countdowning(question, player_name):
-    counter = 30
+    counter = 20
     while counter != 0:
         clean()
         print_question(question, player_name)
         if len(str(counter)) == 1:# a ' ' added to the sentence
-            print(f'\033[96mThe answer will be revalid in\033[0m \033[3{counter % 7}m {counter}\033[0m \033[96msecond\033[0m')
+            print(f'\033[96mThe answer can be revalid in\033[0m \033[3{counter % 7}m {counter}\033[0m \033[96msecond\033[0m')
         else:
-            print(f'\033[96mThe answer will be revalid in\033[0m \033[3{counter % 7}m{counter}\033[0m \033[96msecond\033[0m')
+            print(f'\033[96mThe answer can be revalid in\033[0m \033[3{counter % 7}m{counter}\033[0m \033[96msecond\033[0m')
         counter -= 1
         time.sleep(1)
+
 
 def print_question(question, player_name):
     print(f"\n\033[96m{player_name}'s question is:\033[0m\n\n\033[95m{question}\033[0m")
@@ -76,12 +79,23 @@ def get_players():
 
 
 def print_answer(user_choice, question, player_name, answer_list, question_list):
-    if user_choice == 'y':
+    if user_choice.lower() == 'y':
         clean()
         print_question(question, player_name)
         print(f'\033[96mYour answer is:\033[0m\n\n\033[95m{answer_list[question_list.index(question)]}\033[0m')
+        speak(f'Your answer is {answer_list[question_list.index(question)]}')
     else:
+        clean()
+        print_question(question, player_name)
         print('\033[96mOkay, you know.\033[0m')
+        time.sleep(1)
+
+
+def speak(text):
+    tts= gTTS(text= text, lang="en")
+    filename="voice.mp3"
+    tts.save(filename)
+    playsound.playsound(filename)
 
 
 def main():
@@ -100,13 +114,14 @@ def main():
             print_question(question, player_name)
             user_choice = input('\033[96mDo you need the answer y/n:\033[0m\n\n')
             print_answer(user_choice, question, player_name, answer_list, question_list)
-            print('\033[5mPress enter\033[0m')
-            input()
+            if user_choice == 'y':
+                print('\033[5mPress enter\033[0m')
+                input()
             which_player += 1
             used_questions.append(question)
     except KeyboardInterrupt:
         clean()
-        print('\n\033[94mFUCK YOU TONNY!!!!\033[0m\n')
+        print('\n\033[94m**** YOU TONNY!!!!\033[0m\n')
 
 
 if __name__ == '__main__':
